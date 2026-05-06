@@ -188,7 +188,7 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
         <!-- Formulaire d'avis -->
         <div style="background:var(--surface); padding:1.5rem; border-radius:var(--radius-md); border:1px solid hsla(160,50%,50%,.1);">
           <h4 style="margin-bottom:1rem; font-size:1rem;">Laissez votre avis</h4>
-          <form action="../actions/ajouter_avis.php" method="POST">
+          <form id="review-form" action="../actions/ajouter_avis.php" method="POST">
             <input type="hidden" name="produit_id" value="<?php echo $produit['id']; ?>">
             <input type="hidden" name="code" value="<?php echo $produit['code_unique']; ?>">
             

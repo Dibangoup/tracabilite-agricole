@@ -34,10 +34,10 @@
   </div>
 </footer>
 
-<!-- EmailJS SDK (à configurer) -->
+<!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-  // emailjs.init("YOUR_PUBLIC_KEY"); // À configurer avec votre clé
+  emailjs.init("B64G-TcFIXjplijR3");
 </script>
 <script src="<?php echo $base_url ?? ''; ?>assets/js/main.js"></script>
 </body>

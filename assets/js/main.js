@@ -82,19 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = helpForm.querySelector('input[name="email"]');
       if (!msg) return;
 
-      // Envoi EmailJS (configuration à faire)
+      // Envoi EmailJS
       if (typeof emailjs !== 'undefined') {
-        emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+        emailjs.send('service_g1cl5uk', 'template_idk7ppm', {
           message: msg,
           from_email: email ? email.value : 'visiteur',
-          from_name: 'Visiteur Traçabilité'
+          from_name: 'Contact Traçabilité'
         }).then(() => {
           showHelpSent();
         }).catch(() => {
           alert('Erreur lors de l\'envoi. Réessayez plus tard.');
         });
       } else {
-        // Repli : afficher le message de succès quand même pour la démo
         showHelpSent();
       }
     });
@@ -152,6 +151,26 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
+
+  // ===== GESTION DES AVIS (EmailJS + PHP) =====
+  const reviewForm = document.getElementById('review-form');
+  if (reviewForm) {
+    reviewForm.addEventListener('submit', function(e) {
+      // On ne fait pas e.preventDefault() car on veut que le PHP enregistre aussi l'avis
+      // Mais on lance l'email en parallèle
+      const nom = reviewForm.querySelector('input[name="nom"]').value;
+      const note = reviewForm.querySelector('select[name="note"]').value;
+      const comm = reviewForm.querySelector('textarea[name="commentaire"]').value;
+      
+      if (typeof emailjs !== 'undefined') {
+        emailjs.send('service_g1cl5uk', 'template_idk7ppm', {
+          from_name: nom,
+          message: `Nouvel avis (${note}/5) : ${comm}`,
+          subject: "Nouvel avis consommateur - Du Sol à l'Assiette"
+        });
+      }
+    });
+  }
 
   // ===== DÉFILEMENT FLUIDE =====
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
