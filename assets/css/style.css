@@ -127,6 +127,7 @@ ul { list-style:none; }
 .menu-toggle {
   display:none; background:none; border:none; cursor:pointer;
   flex-direction:column; gap:5px; padding:5px;
+  position:relative; z-index:2000;
 }
 .menu-toggle span {
   display:block; width:24px; height:2px; background:var(--text-1);
@@ -394,7 +395,7 @@ section { padding:5rem 0; }
 }
 .dash-header h1 { font-family:'Kuchek', serif; font-size:2rem; font-weight:normal; }
 .dash-header p { color:var(--text-2); font-size:.9rem; }
-.dash-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:2rem; }
+.dash-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin-bottom:2rem; }
 .dash-stat {
   background:hsla(168,40%,10%,.4);
   border:1px solid hsla(160,50%,50%,.08);
