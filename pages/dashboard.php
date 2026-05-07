@@ -189,6 +189,32 @@ if ($role === 'producteur') {
       <?php endif; ?>
     </div>
   <?php endif; ?>
+
+  <!-- Zone de danger : Suppression de compte -->
+  <div class="card anim" style="margin-top: 2rem; border-color: var(--danger); background: hsla(0, 80%, 50%, 0.02);">
+    <h3 style="color: var(--danger); display:flex; align-items:center; gap:.5rem; margin-bottom: 0.5rem;"><?php echo get_icon('warn', '1.2em', 'var(--danger)'); ?> Zone de danger</h3>
+    <p style="font-size: .9rem; color: var(--text-2); margin-bottom: 1rem;">
+      La suppression de votre compte est définitive. Toutes vos données (produits, interventions, historiques) seront effacées.
+    </p>
+    <button class="btn btn-danger btn-sm" onclick="openModal('modal-delete-account')"><?php echo get_icon('delete', '1.2em'); ?> Supprimer mon compte</button>
+  </div>
+
 </main>
+
+<!-- Modal Suppression de compte -->
+<div class="modal-overlay" id="modal-delete-account">
+  <div class="modal" style="border-color:var(--danger);">
+    <h3 style="color:var(--danger); display:flex; align-items:center; gap:.5rem;"><?php echo get_icon('warn', '1.2em', 'var(--danger)'); ?> Suppression définitive</h3>
+    <p style="color:var(--text-2); font-size:0.9rem; margin-bottom:1.5rem;">
+      Êtes-vous sûr de vouloir supprimer définitivement votre compte ? Cette action est <b>irréversible</b> et supprimera toutes les données qui y sont associées.
+    </p>
+    <form action="../actions/supprimer_compte.php" method="POST" style="margin:0;">
+      <button type="submit" class="btn btn-danger" style="width:100%; justify-content:center;"><?php echo get_icon('delete', '1.2em'); ?> Oui, supprimer mon compte</button>
+    </form>
+    <div class="modal-actions" style="margin-top:1rem;">
+      <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modal-delete-account')" style="background:transparent; border:none; color:var(--text-2);">Annuler</button>
+    </div>
+  </div>
+</div>
 
 <?php include '../includes/footer.php'; ?>

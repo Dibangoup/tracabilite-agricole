@@ -14,6 +14,12 @@ if (isset($_SESSION['user'])) {
     <h2>Inscription</h2>
     <p class="subtitle">Rejoignez le réseau Du Sol à l'Assiette</p>
 
+    <?php if (isset($_GET['erreur']) && $_GET['erreur'] === 'email_existe'): ?>
+      <div class="alert alert-error" style="margin-bottom: 1.5rem; text-align: center;">
+        Cet email est déjà utilisé par un autre compte. Veuillez en choisir un autre ou <a href="login.php" style="text-decoration:underline;">vous connecter</a>.
+      </div>
+    <?php endif; ?>
+
     <form action="../actions/register.php" method="POST">
       <div class="form-group">
         <label>Je suis un(e) :</label>

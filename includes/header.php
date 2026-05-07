@@ -34,6 +34,7 @@ require_once __DIR__ . '/icons.php';
         </a>
         <a href="<?php echo $base_url ?? ''; ?>actions/logout.php" class="nav-btn">Déconnexion</a>
       <?php else: ?>
+        <a href="<?php echo $base_url ?? ''; ?>auth/register.php" class="nav-btn">S'inscrire</a>
         <a href="<?php echo $base_url ?? ''; ?>auth/login.php" class="nav-btn login-btn">Se connecter</a>
       <?php endif; ?>
     </nav>
