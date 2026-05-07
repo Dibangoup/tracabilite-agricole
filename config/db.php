@@ -7,8 +7,14 @@
   mysqli_set_charset($conn, "utf8mb4");
 
   // URL de base du site (utilisée pour les QR codes)
-  // À modifier en production avec votre nom de domaine réel (ex: https://tracabilite.votredomaine.com)
-  define('SITE_URL', 'http://' . $_SERVER['HTTP_HOST'] . '/Projet_web/tracabilite-agricole');
+  // Détection automatique : fonctionne en local (XAMPP) ET en production sans modification
+  $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+  // Calcule le chemin web à partir de l'emplacement physique de ce fichier
+  // __DIR__ = .../tracabilite-agricole/config → on remonte d'1 niveau → .../tracabilite-agricole
+  $doc_root = rtrim(str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']), '/');
+  $project_root = rtrim(str_replace('\\', '/', dirname(__DIR__)), '/');
+  $base_path = str_replace($doc_root, '', $project_root);
+  define('SITE_URL', $protocol . '://' . $_SERVER['HTTP_HOST'] . $base_path);
 
   // Vérification si la connexion a échoué
   if(!$conn){
