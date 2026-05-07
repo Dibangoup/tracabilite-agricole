@@ -12,55 +12,39 @@ $erreur = '';
 if (isset($_GET['code']) && !empty($_GET['code'])) {
     $code = htmlspecialchars($_GET['code']);
     
+    $code_esc = mysqli_real_escape_string($conn, $code);
+    
     // Récupérer le produit
-    $stmt = mysqli_prepare($conn, "SELECT p.*, u.nom as producteur_nom FROM produits p JOIN users u ON p.producteur_id = u.id WHERE p.code_unique = ?");
-    mysqli_stmt_bind_param($stmt, "s", $code);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $result = mysqli_query($conn, "SELECT p.*, u.nom as producteur_nom FROM produits p JOIN users u ON p.producteur_id = u.id WHERE p.code_unique = '$code_esc'");
     
     if (mysqli_num_rows($result) > 0) {
         $produit = mysqli_fetch_assoc($result);
-        $produit_id = $produit['id'];
+        $produit_id = intval($produit['id']);
         
         // Enregistrer la recherche dans l'historique si l'utilisateur est connecté
         if (isset($_SESSION['user'])) {
-            $user_id = $_SESSION['user']['id'];
+            $user_id = intval($_SESSION['user']['id']);
             // Vérifier si cette recherche n'a pas déjà été faite récemment (évite les doublons)
-            $check_hist = mysqli_prepare($conn, "SELECT id FROM historique_recherche WHERE user_id = ? AND produit_id = ? AND date_recherche > DATE_SUB(NOW(), INTERVAL 1 HOUR)");
-            mysqli_stmt_bind_param($check_hist, "ii", $user_id, $produit_id);
-            mysqli_stmt_execute($check_hist);
-            if (mysqli_num_rows(mysqli_stmt_get_result($check_hist)) == 0) {
-                $ins_hist = mysqli_prepare($conn, "INSERT INTO historique_recherche (user_id, produit_id, code_recherche) VALUES (?, ?, ?)");
-                mysqli_stmt_bind_param($ins_hist, "iis", $user_id, $produit_id, $code);
-                mysqli_stmt_execute($ins_hist);
-                mysqli_stmt_close($ins_hist);
+            $check_hist = mysqli_query($conn, "SELECT id FROM historique_recherche WHERE user_id = $user_id AND produit_id = $produit_id AND date_recherche > DATE_SUB(NOW(), INTERVAL 1 HOUR)");
+            if (mysqli_num_rows($check_hist) == 0) {
+                mysqli_query($conn, "INSERT INTO historique_recherche (user_id, produit_id, code_recherche) VALUES ($user_id, $produit_id, '$code_esc')");
             }
-            mysqli_stmt_close($check_hist);
         }
         
         // Récupérer les étapes de traçabilité
-        $stmt_etapes = mysqli_prepare($conn, "SELECT e.*, u.nom as acteur_nom, u.role as acteur_role FROM etapes_tracabilite e JOIN users u ON e.acteur_id = u.id WHERE e.produit_id = ? ORDER BY e.date_etape ASC");
-        mysqli_stmt_bind_param($stmt_etapes, "i", $produit_id);
-        mysqli_stmt_execute($stmt_etapes);
-        $result_etapes = mysqli_stmt_get_result($stmt_etapes);
+        $result_etapes = mysqli_query($conn, "SELECT e.*, u.nom as acteur_nom, u.role as acteur_role FROM etapes_tracabilite e JOIN users u ON e.acteur_id = u.id WHERE e.produit_id = $produit_id ORDER BY e.date_etape ASC");
         while ($row = mysqli_fetch_assoc($result_etapes)) {
             $etapes[] = $row;
         }
-        mysqli_stmt_close($stmt_etapes);
         
         // Récupérer les avis consommateurs
-        $stmt_avis = mysqli_prepare($conn, "SELECT * FROM avis WHERE produit_id = ? ORDER BY date_avis DESC");
-        mysqli_stmt_bind_param($stmt_avis, "i", $produit_id);
-        mysqli_stmt_execute($stmt_avis);
-        $result_avis = mysqli_stmt_get_result($stmt_avis);
+        $result_avis = mysqli_query($conn, "SELECT * FROM avis WHERE produit_id = $produit_id ORDER BY date_avis DESC");
         while ($row = mysqli_fetch_assoc($result_avis)) {
             $avis[] = $row;
         }
-        mysqli_stmt_close($stmt_avis);
     } else {
         $erreur = "Aucun produit trouvé avec ce code.";
     }
-    mysqli_stmt_close($stmt);
 }
 ?>
 

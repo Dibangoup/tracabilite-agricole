@@ -6,10 +6,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
 
-    $stmt = mysqli_prepare($conn, "SELECT * FROM users WHERE email = ?");
-    mysqli_stmt_bind_param($stmt, "s", $email);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
+    $email_esc = mysqli_real_escape_string($conn, $email);
+    $result = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email_esc'");
     $user = mysqli_fetch_assoc($result);
     
     if ($user && password_verify($password, $user['mot_de_passe'])) {

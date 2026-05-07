@@ -12,10 +12,8 @@ $role = get_user_role();
 // Cas 1: Recherche par code (utilisé par les intermédiaires)
 if (isset($_GET['code_search'])) {
     $code = htmlspecialchars($_GET['code_search']);
-    $stmt = mysqli_prepare($conn, "SELECT id FROM produits WHERE code_unique = ?");
-    mysqli_stmt_bind_param($stmt, "s", $code);
-    mysqli_stmt_execute($stmt);
-    $res = mysqli_stmt_get_result($stmt);
+    $code_esc = mysqli_real_escape_string($conn, $code);
+    $res = mysqli_query($conn, "SELECT id FROM produits WHERE code_unique = '$code_esc'");
     if (mysqli_num_rows($res) > 0) {
         $id = mysqli_fetch_assoc($res)['id'];
         header("Location: produit.php?id=" . $id);
@@ -35,10 +33,8 @@ if (!isset($_GET['id'])) {
 $produit_id = intval($_GET['id']);
 
 // Récupérer les étapes du cycle de vie du produit
-$stmt = mysqli_prepare($conn, "SELECT p.*, u.nom as producteur_nom FROM produits p JOIN users u ON p.producteur_id = u.id WHERE p.id = ?");
-mysqli_stmt_bind_param($stmt, "i", $produit_id);
-mysqli_stmt_execute($stmt);
-$result = mysqli_stmt_get_result($stmt);
+$prod_id_esc = intval($produit_id);
+$result = mysqli_query($conn, "SELECT p.*, u.nom as producteur_nom FROM produits p JOIN users u ON p.producteur_id = u.id WHERE p.id = $prod_id_esc");
 
 if (mysqli_num_rows($result) === 0) {
     die("Produit introuvable.");
