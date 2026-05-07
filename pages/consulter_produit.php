@@ -177,7 +177,7 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
             <input type="hidden" name="produit_id" value="<?php echo $produit['id']; ?>">
             <input type="hidden" name="code" value="<?php echo $produit['code_unique']; ?>">
             
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem;">
+            <div class="review-form-grid">
               <div class="form-group" style="margin-bottom:0;">
                 <label>Votre nom</label>
                 <input type="text" name="nom" class="form-input" required>

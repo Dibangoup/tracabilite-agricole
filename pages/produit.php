@@ -67,13 +67,13 @@ $est_detruit = strpos(strtolower($produit['description'] ?? ''), 'détruit') !==
     <?php endif; ?>
   </div>
 
-  <div style="display:grid; grid-template-columns:minmax(0, 1fr) 350px; gap:2rem;">
+  <div class="product-layout">
     
     <!-- Infos principales -->
     <div style="display:flex; flex-direction:column; gap:2rem;">
       <div class="card anim">
         <h3 style="margin-bottom:1rem; border-bottom:1px solid hsla(160,50%,50%,.1); padding-bottom:.5rem;">Fiche d'identité</h3>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.5rem;">
+        <div class="info-grid">
           <div>
             <div style="font-size:.8rem; color:var(--text-3);">Code Unique (QR)</div>
             <div style="font-family:monospace; color:var(--caribbean); font-weight:600;"><?php echo $produit['code_unique']; ?></div>
