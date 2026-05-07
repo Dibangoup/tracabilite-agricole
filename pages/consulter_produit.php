@@ -54,8 +54,8 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
     <p class="section-desc mx-auto">Entrez le code unique du produit ou scannez son QR code pour voir tout son parcours.</p>
   </div>
 
-  <div class="search-box anim">
-    <form action="" method="GET" style="display:flex; width:100%; gap:.8rem;">
+  <div class="anim">
+    <form action="" method="GET" class="search-box">
       <input type="text" name="code" id="code-input" class="form-input" placeholder="Ex: PROD_6839a1b2c3" value="<?php echo isset($_GET['code']) ? htmlspecialchars($_GET['code']) : ''; ?>" required>
       <button type="submit" class="btn btn-primary">Rechercher</button>
       <button type="button" class="btn btn-secondary" onclick="document.getElementById('qr-scanner-container').style.display='block'; startQRScanner();"><?php echo get_icon('camera', '1.2em'); ?> Scanner</button>

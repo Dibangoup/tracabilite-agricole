@@ -155,8 +155,8 @@ if ($role === 'producteur') {
     <div class="card anim" style="margin-bottom:2rem;">
       <h3 style="margin-bottom:1rem;">Scanner un produit pour ajouter une étape</h3>
       <p style="font-size:.9rem; color:var(--text-2); margin-bottom:1rem;">Entrez le code unique du produit pour enregistrer votre intervention (<?php echo $role; ?>).</p>
-      <form action="produit.php" method="GET" style="display:flex; gap:1rem; max-width:500px;">
-        <input type="text" name="code_search" class="form-input" placeholder="Ex: PROD_..." required style="flex:1;">
+      <form action="produit.php" method="GET" class="search-box" style="margin:0; max-width:100%;">
+        <input type="text" name="code_search" class="form-input" placeholder="Ex: PROD_..." required>
         <button type="submit" class="btn btn-primary">Chercher</button>
       </form>
     </div>

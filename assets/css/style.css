@@ -423,7 +423,7 @@ section { padding:5rem 0; }
 
 /* ===== SEARCH BOX ===== */
 .search-box {
-  display:flex; gap:.8rem; max-width:600px;
+  display:flex; gap:.8rem; width:100%; max-width:600px;
   margin:0 auto 2rem;
 }
 .search-box .form-input { flex:1; }
