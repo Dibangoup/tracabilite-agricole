@@ -13,10 +13,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $check = mysqli_prepare($conn, "SELECT id FROM produits WHERE id = ? AND producteur_id = ?");
     mysqli_stmt_bind_param($check, "ii", $produit_id, $user_id);
     mysqli_stmt_execute($check);
-    if (mysqli_num_rows(mysqli_stmt_get_result($check)) === 0) {
+    mysqli_stmt_store_result($check);
+    if (mysqli_stmt_num_rows($check) === 0) {
+        mysqli_stmt_close($check);
         header("Location: ../pages/dashboard.php?erreur=non_autorise");
         exit();
     }
+    mysqli_stmt_close($check);
     
     // ON DELETE CASCADE takes care of etapes and avis
     $stmt = mysqli_prepare($conn, "DELETE FROM produits WHERE id = ?");

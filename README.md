@@ -206,8 +206,26 @@ Chaque produit possède un QR code qui encode une **URL complète** pointant ver
 - ✅ **Vérification POST** — toutes les actions vérifient la méthode HTTP avant de traiter
 - ✅ **Échappement HTML** — `htmlspecialchars()` sur tous les affichages pour éviter le XSS
 
-## 👥 Équipe
+## ⚠️ Problèmes fréquents et solutions
 
+### 1. Erreur lors de la suppression d'un produit (Foreign Key Constraint)
+**Symptôme :** Erreur `Cannot delete or update a parent row: a foreign key constraint fails` lors de la tentative de suppression d'un produit.
+**Cause :** La base de données a été créée sans l'option `ON DELETE CASCADE` pour les tables liées (`avis` et `etapes_tracabilite`).
+**Solution :** Exécuter ces requêtes SQL dans phpMyAdmin pour recréer les liaisons correctement :
+```sql
+ALTER TABLE `avis` DROP FOREIGN KEY `avis_ibfk_1`;
+ALTER TABLE `avis` ADD CONSTRAINT `avis_ibfk_1` FOREIGN KEY (`produit_id`) REFERENCES `produits`(`id`) ON DELETE CASCADE;
+
+ALTER TABLE `etapes_tracabilite` DROP FOREIGN KEY `etapes_tracabilite_ibfk_1`;
+ALTER TABLE `etapes_tracabilite` ADD CONSTRAINT `etapes_tracabilite_ibfk_1` FOREIGN KEY (`produit_id`) REFERENCES `produits`(`id`) ON DELETE CASCADE;
+```
+
+### 2. Erreur 500 sur InfinityFree (mysqlnd manquant)
+**Symptôme :** Erreur fatale (souvent 500) sur certaines pages (notamment la suppression de produit ou la connexion) lors de l'hébergement sur InfinityFree.
+**Cause :** La fonction `mysqli_stmt_get_result()` nécessite le driver PHP `mysqlnd` qui n'est pas activé par défaut sur certains hébergements gratuits comme InfinityFree.
+**Solution :** Les requêtes ont été réécrites pour utiliser `mysqli_stmt_store_result()` et `mysqli_stmt_bind_result()` ou `mysqli_stmt_num_rows()`, qui sont compatibles nativement partout.
+
+## 👥 Équipe
 Projet réalisé dans le cadre d'un projet web universitaire.
 
 - **Repository** : [github.com/Dibangoup/tracabilite-agricole](https://github.com/Dibangoup/tracabilite-agricole)
