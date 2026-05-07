@@ -154,11 +154,12 @@ $est_detruit = strpos(strtolower($produit['description'] ?? ''), 'détruit') !==
     <div style="display:flex; flex-direction:column; gap:2rem;">
       <div class="card anim text-center">
         <h3 style="margin-bottom:1rem;">QR Code</h3>
+        <?php $qr_url = SITE_URL . '/pages/consulter_produit.php?code=' . urlencode($produit['code_unique']); ?>
         <div class="qr-container mx-auto" style="display:inline-block; margin-bottom:1rem;">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($produit['code_unique']); ?>&color=001F1B&bgcolor=F1F7F6" alt="QR Code">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=<?php echo urlencode($qr_url); ?>&color=001F1B&bgcolor=F1F7F6" alt="QR Code">
         </div>
         <p style="font-size:.8rem; color:var(--text-2);">Imprimez ce code et collez-le sur le lot. Tous les acteurs le scanneront.</p>
-        <a href="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=<?php echo urlencode($produit['code_unique']); ?>" download="QR_<?php echo $produit['code_unique']; ?>" target="_blank" class="btn btn-secondary btn-sm" style="margin-top:1rem; width:100%; justify-content:center;"><?php echo get_icon('print', '1.2em'); ?> Imprimer le code</a>
+        <a href="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=<?php echo urlencode($qr_url); ?>" download="QR_<?php echo $produit['code_unique']; ?>" target="_blank" class="btn btn-secondary btn-sm" style="margin-top:1rem; width:100%; justify-content:center;"><?php echo get_icon('print', '1.2em'); ?> Imprimer le code</a>
       </div>
     </div>
 

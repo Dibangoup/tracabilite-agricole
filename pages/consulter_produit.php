@@ -122,7 +122,8 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
           </div>
         </div>
         <div class="qr-container">
-          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($produit['code_unique']); ?>&color=001F1B&bgcolor=F1F7F6" alt="QR Code" width="100" height="100">
+          <?php $qr_url = SITE_URL . '/pages/consulter_produit.php?code=' . urlencode($produit['code_unique']); ?>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=<?php echo urlencode($qr_url); ?>&color=001F1B&bgcolor=F1F7F6" alt="QR Code" width="100" height="100">
           <div style="font-size:0.7rem; color:var(--rich-black); margin-top:0.5rem; font-family:monospace;"><?php echo htmlspecialchars($produit['code_unique']); ?></div>
         </div>
       </div>
