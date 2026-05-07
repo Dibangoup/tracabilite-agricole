@@ -12,10 +12,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $check = mysqli_prepare($conn, "SELECT id FROM users WHERE email = ?");
     mysqli_stmt_bind_param($check, "s", $email);
     mysqli_stmt_execute($check);
-    if (mysqli_num_rows(mysqli_stmt_get_result($check)) > 0) {
-        header("Location: ../auth/login.php?erreur=email_existe");
+    mysqli_stmt_store_result($check);
+    if (mysqli_stmt_num_rows($check) > 0) {
+        mysqli_stmt_close($check);
+        header("Location: ../auth/register.php?erreur=email_existe");
         exit();
     }
+    mysqli_stmt_close($check);
     
     $hash = password_hash($password, PASSWORD_BCRYPT);
 
