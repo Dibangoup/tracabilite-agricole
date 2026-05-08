@@ -153,13 +153,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $produit) {
     <h3 style="margin-bottom:1rem; display:flex; align-items:center; gap:.5rem;">
       <?php echo get_icon('camera', '1.2em', 'var(--caribbean)'); ?> Scanner via la caméra
     </h3>
-    <div id="qr-reader" style="width:100%; max-width:500px; margin:0 auto; border-radius:var(--radius-md); overflow:hidden;"></div>
-    <p id="scan-status" style="text-align:center; font-size:.85rem; color:var(--text-3); margin-top:.8rem;">
-      Pointez la caméra arrière vers le QR code du produit...
-    </p>
+    <div id="qr-reader" style="width:100%; max-width:500px; margin:0 auto; border-radius:var(--radius-md); overflow:hidden;">
+      <p style="text-align:center; color:var(--text-3); padding:2rem;">Appuyez sur le bouton ci-dessous pour activer la caméra.</p>
+    </div>
+    <p id="scan-status" style="text-align:center; font-size:.85rem; color:var(--text-3); margin-top:.8rem;"></p>
     <div style="text-align:center; margin-top:.8rem;">
+      <button type="button" id="btn-start-camera" class="btn btn-primary btn-sm" onclick="demarrerCamera()" style="display:inline-flex; align-items:center; gap:.4rem;">
+        📷 Activer la caméra
+      </button>
       <button type="button" id="btn-stop-camera" class="btn btn-secondary btn-sm" onclick="arreterCamera()" style="display:none;">
-        ✕ Fermer la caméra
+        ✕ Désactiver la caméra
       </button>
     </div>
   </div>
@@ -360,64 +363,64 @@ function selectEtape(val, btn) {
 }
 
 <?php if (!$produit): ?>
-// Démarrage du scanner QR (caméra arrière)
 var scanner = null;
 
-document.addEventListener('DOMContentLoaded', function() {
+function demarrerCamera() {
   var readerDiv = document.getElementById('qr-reader');
   if (!readerDiv || typeof Html5Qrcode === 'undefined') return;
 
-  scanner = new Html5Qrcode("qr-reader");
+  readerDiv.innerHTML = '';
+  document.getElementById('scan-status').innerHTML = 'Démarrage de la caméra...';
+  document.getElementById('btn-start-camera').style.display = 'none';
 
-  Html5Qrcode.getCameras().then(function(cameras) {
-    if (!cameras || cameras.length === 0) {
-      readerDiv.innerHTML = '<p style="text-align:center; color:var(--text-3); padding:2rem;">Aucune caméra détectée.</p>';
-      return;
-    }
+  if (!scanner) {
+    scanner = new Html5Qrcode("qr-reader");
+  }
 
-    scanner.start(
-      { facingMode: "environment" },
-      { fps: 10, qrbox: { width: 250, height: 250 } },
-      function(decodedText) {
-        var code = decodedText;
-        try {
-          var url = new URL(decodedText);
-          var p = url.searchParams.get('code');
-          if (p) code = p;
-        } catch(e) {}
+  scanner.start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: { width: 250, height: 250 } },
+    function(decodedText) {
+      var code = decodedText;
+      try {
+        var url = new URL(decodedText);
+        var p = url.searchParams.get('code');
+        if (p) code = p;
+      } catch(e) {}
 
-        document.getElementById('scan-status').innerHTML =
-          '<span style="color:var(--caribbean); font-weight:600;">✅ QR code détecté ! Chargement...</span>';
-        document.getElementById('btn-stop-camera').style.display = 'none';
+      document.getElementById('scan-status').innerHTML =
+        '<span style="color:var(--caribbean); font-weight:600;">✅ QR code détecté ! Chargement...</span>';
+      document.getElementById('btn-stop-camera').style.display = 'none';
 
-        scanner.stop().then(function() {
-          window.location.href = 'scanner.php?code=' + encodeURIComponent(code);
-        });
-      },
-      function() {}
-    ).then(function() {
-      // Caméra démarrée → afficher le bouton fermer
-      document.getElementById('btn-stop-camera').style.display = 'inline-flex';
-    }).catch(function() {
-      readerDiv.innerHTML = '<div class="alert alert-error" style="margin:0;">Impossible d\'accéder à la caméra. Utilisez la saisie manuelle ci-dessous.</div>';
-    });
+      scanner.stop().then(function() {
+        window.location.href = 'scanner.php?code=' + encodeURIComponent(code);
+      });
+    },
+    function() {}
+  ).then(function() {
+    document.getElementById('scan-status').innerHTML = 'Pointez la caméra arrière vers le QR code du produit...';
+    document.getElementById('btn-stop-camera').style.display = 'inline-flex';
   }).catch(function() {
-    readerDiv.innerHTML = '<div class="alert alert-error" style="margin:0;">Impossible d\'accéder à la caméra. Utilisez la saisie manuelle ci-dessous.</div>';
+    readerDiv.innerHTML = '<div class="alert alert-error" style="margin:0;">Impossible d\'accéder à la caméra. Vérifiez les permissions.</div>';
+    document.getElementById('scan-status').innerHTML = 'Utilisez la saisie manuelle ci-dessous.';
+    document.getElementById('btn-start-camera').style.display = 'inline-flex';
   });
-});
+}
 
-// Arrêter la caméra proprement
 function arreterCamera() {
   if (scanner && scanner.isScanning) {
     scanner.stop().then(function() {
       document.getElementById('qr-reader').innerHTML = '<p style="text-align:center; color:var(--text-3); padding:2rem;">📷 Caméra désactivée.</p>';
-      document.getElementById('scan-status').innerHTML = 'Utilisez la saisie manuelle ci-dessous pour chercher un produit.';
+      document.getElementById('scan-status').innerHTML = '';
       document.getElementById('btn-stop-camera').style.display = 'none';
+      document.getElementById('btn-start-camera').style.display = 'inline-flex';
     }).catch(function() {
       document.getElementById('btn-stop-camera').style.display = 'none';
+      document.getElementById('btn-start-camera').style.display = 'inline-flex';
     });
   } else {
     document.getElementById('btn-stop-camera').style.display = 'none';
+    document.getElementById('btn-start-camera').style.display = 'inline-flex';
   }
 }
 <?php endif; ?>
