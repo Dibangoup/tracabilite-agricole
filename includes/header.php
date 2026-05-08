@@ -36,6 +36,11 @@ require_once __DIR__ . '/icons.php';
           produit</a>
 
         <?php if (isset($_SESSION['user'])): ?>
+          <?php $user_role = $_SESSION['user']['role'] ?? '';
+            if (!in_array($user_role, ['producteur', 'consommateur'])): ?>
+            <a href="<?php echo $base_url ?? ''; ?>pages/scanner.php" class="nav-btn accent-btn"
+              style="display:inline-flex;align-items:center;gap:.3rem;">📷 Scanner</a>
+          <?php endif; ?>
           <a href="<?php echo $base_url ?? ''; ?>pages/dashboard.php" class="nav-btn login-btn">
             📊 Dashboard
           </a>

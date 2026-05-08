@@ -24,6 +24,15 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
         // Enregistrer la recherche dans l'historique si l'utilisateur est connecté
         if (isset($_SESSION['user'])) {
             $user_id = intval($_SESSION['user']['id']);
+            $role = $_SESSION['user']['role'];
+            
+            // Si l'utilisateur n'est pas un consommateur, on le redirige directement vers la page d'action du produit
+            // Cela permet d'utiliser le scanner natif du téléphone pour aller directement agir sur le produit
+            if ($role !== 'consommateur') {
+                header("Location: produit.php?id=" . $produit_id);
+                exit();
+            }
+
             // Vérifier si cette recherche n'a pas déjà été faite récemment (évite les doublons)
             $check_hist = mysqli_query($conn, "SELECT id FROM historique_recherche WHERE user_id = $user_id AND produit_id = $produit_id AND date_recherche > DATE_SUB(NOW(), INTERVAL 1 HOUR)");
             if (mysqli_num_rows($check_hist) == 0) {

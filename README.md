@@ -27,6 +27,7 @@ Chaque produit dispose d'un **QR code unique** qui, une fois scanné, ouvre dire
 - 🌍 **Gestion du fuseau horaire** — configuré par défaut pour la Côte d'Ivoire (Africa/Abidjan)
 - 🕒 **Précision temporelle** — sélection de l'heure exacte lors de l'enregistrement d'une étape (rétroactive)
 - 📷 **Scan QR optimisé** — utilisation de la caméra arrière sur mobile et intégration directe pour l'ajout d'étapes depuis le tableau de bord
+- 📱 **Page scanner dédiée** — interface complète pour les acteurs intermédiaires : scan caméra, saisie manuelle, formulaire d'action dynamique selon le rôle, et timeline du lot
 
 ## 🛠️ Technologies utilisées
 
@@ -68,6 +69,7 @@ tracabilite-agricole/
 │   ├── dashboard.php                # Tableau de bord adapté selon le rôle
 │   ├── ajouter_produit.php          # Formulaire d'ajout de produit
 │   ├── produit.php                  # Détail produit + QR code + gestion étapes
+│   ├── scanner.php                  # Scanner QR dédié (intermédiaires : scan caméra + action)
 │   └── consulter_produit.php        # Consultation publique par code/scan QR
 ├── assets/
 │   ├── css/                         # Feuilles de style

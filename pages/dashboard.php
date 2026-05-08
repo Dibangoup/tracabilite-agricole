@@ -154,17 +154,10 @@ if ($role === 'producteur') {
     <!-- Intermédiaires (Coopérative, Transporteur, Transformateur, Distributeur) -->
     <div class="card anim" style="margin-bottom:2rem;">
       <h3 style="margin-bottom:1rem;">Scanner un produit pour ajouter une étape</h3>
-      <p style="font-size:.9rem; color:var(--text-2); margin-bottom:1rem;">Entrez le code unique du produit pour enregistrer votre intervention (<?php echo $role; ?>).</p>
-      <form action="produit.php" method="GET" class="search-box" style="margin:0; max-width:100%;">
-        <input type="text" name="code_search" id="code-input" class="form-input" placeholder="Ex: PROD_..." required>
-        <button type="submit" class="btn btn-primary">Chercher</button>
-        <button type="button" class="btn btn-secondary" onclick="document.getElementById('qr-scanner-container').style.display='block'; startQRScanner();"><?php echo get_icon('camera', '1.2em'); ?> Scanner</button>
-      </form>
-
-      <div id="qr-scanner-container" style="display:none; margin-top:1rem;" class="anim text-center">
-        <div id="qr-reader"></div>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="stopQRScanner();">Fermer le scanner</button>
-      </div>
+      <p style="font-size:.9rem; color:var(--text-2); margin-bottom:1rem;">Scannez le QR code du produit ou saisissez son code unique pour enregistrer votre intervention (<?php echo $role; ?>).</p>
+      <a href="scanner.php" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:.5rem;">
+        <?php echo get_icon('camera', '1.2em'); ?> Ouvrir le scanner
+      </a>
     </div>
 
     <div class="card anim" style="overflow-x:auto;">
@@ -222,7 +215,5 @@ if ($role === 'producteur') {
     </div>
   </div>
 </div>
-
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <?php include '../includes/footer.php'; ?>
