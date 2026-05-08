@@ -135,30 +135,61 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // ===== SCANNER QR =====
+  let html5QrCode;
+
   window.startQRScanner = function() {
     const readerDiv = document.getElementById('qr-reader');
-    if (!readerDiv || typeof Html5QrcodeScanner === 'undefined') return;
+    if (!readerDiv || typeof Html5Qrcode === 'undefined') return;
     
-    const scanner = new Html5QrcodeScanner("qr-reader", {
-      fps: 10, qrbox: { width: 250, height: 250 }
-    });
-    scanner.render((decodedText) => {
-      scanner.clear();
-      const input = document.getElementById('code-input');
-      if (input) {
-        let codeValue = decodedText;
-        try {
-          const url = new URL(decodedText);
-          if (url.searchParams.has('code')) {
-            codeValue = url.searchParams.get('code');
+    if (!html5QrCode) {
+      html5QrCode = new Html5Qrcode("qr-reader");
+    }
+    
+    const config = { fps: 10, qrbox: { width: 250, height: 250 } };
+    
+    html5QrCode.start(
+      { facingMode: "environment" },
+      config,
+      (decodedText) => {
+        html5QrCode.stop().then(() => {
+          document.getElementById('qr-scanner-container').style.display = 'none';
+          const input = document.getElementById('code-input');
+          if (input) {
+            let codeValue = decodedText;
+            try {
+              const url = new URL(decodedText);
+              if (url.searchParams.has('code')) {
+                codeValue = url.searchParams.get('code');
+              }
+            } catch (e) {
+              // Pas une URL, on garde le texte brut
+            }
+            input.value = codeValue;
+            setTimeout(() => input.form.submit(), 200);
           }
-        } catch (e) {
-          // Pas une URL, on garde le texte brut
-        }
-        input.value = codeValue;
-        input.form.submit();
+        }).catch(err => console.error("Erreur d'arrêt du scanner", err));
+      },
+      (errorMessage) => {
+        // Ignorer les erreurs de scan par trame
       }
+    ).catch((err) => {
+      console.error("Erreur de caméra:", err);
+      alert("Impossible d'accéder à la caméra arrière. Vérifiez les permissions.");
+      document.getElementById('qr-scanner-container').style.display = 'none';
     });
+  };
+
+  window.stopQRScanner = function() {
+    if (html5QrCode && html5QrCode.isScanning) {
+      html5QrCode.stop().then(() => {
+        document.getElementById('qr-scanner-container').style.display = 'none';
+      }).catch(err => {
+        console.error(err);
+        document.getElementById('qr-scanner-container').style.display = 'none';
+      });
+    } else {
+      document.getElementById('qr-scanner-container').style.display = 'none';
+    }
   };
 
   // ===== GESTION DES AVIS (EmailJS + PHP) =====

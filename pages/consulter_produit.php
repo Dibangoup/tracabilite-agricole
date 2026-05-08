@@ -64,7 +64,7 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
 
   <div id="qr-scanner-container" style="display:none;" class="anim text-center">
     <div id="qr-reader"></div>
-    <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('qr-scanner-container').style.display='none';">Fermer le scanner</button>
+    <button type="button" class="btn btn-secondary btn-sm" onclick="stopQRScanner();">Fermer le scanner</button>
   </div>
 
   <?php if ($erreur): ?>
