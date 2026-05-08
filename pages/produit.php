@@ -132,6 +132,11 @@ $est_detruit = strpos(strtolower($produit['description'] ?? ''), 'détruit') !==
               <textarea name="description" class="form-textarea" placeholder="Ex: Stocké à 5°C, Transformé en pâte..." required></textarea>
             </div>
 
+            <div class="form-group">
+              <label>Date et heure de l'action</label>
+              <input type="datetime-local" name="date_etape" class="form-input" value="<?php echo date('Y-m-d\TH:i'); ?>" required>
+            </div>
+
             <?php if ($role === 'transformateur'): ?>
               <div class="form-group" style="padding:1rem; background:hsla(40,90%,55%,.1); border-radius:var(--radius-sm); border:1px solid hsla(40,90%,55%,.2);">
                 <label style="color:var(--warning); display:flex; align-items:center; gap:.5rem;"><?php echo get_icon('warn', '1.2em', 'var(--warning)'); ?> Nouvelle date de péremption (Suite à la transformation)</label>

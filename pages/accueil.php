@@ -7,10 +7,7 @@
       <p>Suivez le parcours complet de vos produits agricoles, depuis la plantation jusqu'à votre table. Transparence, qualité et confiance à chaque étape.</p>
       <div class="hero-actions">
         <a href="<?php echo $base_url ?? ''; ?>pages/consulter_produit.php" class="btn btn-primary"><?php echo get_icon('search', '1.2em'); ?> Suivre un produit</a>
-        <?php if (!isset($_SESSION['user'])): ?>
-          <a href="<?php echo $base_url ?? ''; ?>auth/register.php" class="btn btn-secondary">Créer un compte</a>
-        <?php endif; ?>
-        <a href="#fonctionnement" class="btn btn-secondary" style="background:transparent; border-color:var(--text-1); color:var(--text-1);">Comment ça marche ?</a>
+        <a href="#fonctionnement" class="btn btn-secondary">Comment ça marche ?</a>
       </div>
     </div>
   </section>

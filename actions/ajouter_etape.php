@@ -18,8 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $date_peremption = $_POST['date_peremption'];
     }
 
-    $stmt = mysqli_prepare($conn, "INSERT INTO etapes_tracabilite (produit_id, acteur_id, etape, description, lieu, date_etape, date_peremption) VALUES (?, ?, ?, ?, ?, NOW(), ?)");
-    mysqli_stmt_bind_param($stmt, "iissss", $produit_id, $acteur_id, $etape, $description, $lieu, $date_peremption);
+    $date_etape = !empty($_POST['date_etape']) ? $_POST['date_etape'] : date('Y-m-d H:i:s');
+
+    $stmt = mysqli_prepare($conn, "INSERT INTO etapes_tracabilite (produit_id, acteur_id, etape, description, lieu, date_etape, date_peremption) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "iisssss", $produit_id, $acteur_id, $etape, $description, $lieu, $date_etape, $date_peremption);
 
     if (mysqli_stmt_execute($stmt)) {
         // Mettre à jour la date de péremption du produit s'il y a lieu

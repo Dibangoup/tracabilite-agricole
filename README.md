@@ -24,6 +24,8 @@ Chaque produit dispose d'un **QR code unique** qui, une fois scanné, ouvre dire
 - 🔍 Recherche de produits par code unique ou scan QR
 - 📜 Historique des recherches pour les consommateurs
 - 🌐 Détection automatique de l'URL du site (compatible local et production)
+- 🌍 **Gestion du fuseau horaire** — configuré par défaut pour la Côte d'Ivoire (Africa/Abidjan)
+- 🕒 **Précision temporelle** — sélection de l'heure exacte lors de l'enregistrement d'une étape (rétroactive)
 
 ## 🛠️ Technologies utilisées
 

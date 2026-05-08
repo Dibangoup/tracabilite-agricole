@@ -22,6 +22,9 @@
     define('DB_PASS', '');
   }
 
+  // Définir le fuseau horaire par défaut (Côte d'Ivoire)
+  date_default_timezone_set('Africa/Abidjan');
+
   // Connexion à la base de données MySQL
   $conn = mysqli_connect(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
