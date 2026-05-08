@@ -26,9 +26,14 @@ if (isset($_GET['code']) && !empty($_GET['code'])) {
             $user_id = intval($_SESSION['user']['id']);
             $role = $_SESSION['user']['role'];
             
-            // Si l'utilisateur n'est pas un consommateur, on le redirige directement vers la page d'action du produit
-            // Cela permet d'utiliser le scanner natif du téléphone pour aller directement agir sur le produit
-            if ($role !== 'consommateur') {
+            // Redirection selon le rôle :
+            // - Les intermédiaires sont redirigés vers le scanner dédié pour enregistrer leur action
+            // - Les producteurs sont redirigés vers la page de gestion de leur produit
+            // - Les consommateurs restent ici pour consulter le produit et laisser un avis
+            if (in_array($role, ['cooperative', 'transporteur', 'transformateur', 'distributeur'])) {
+                header("Location: scanner.php?code=" . urlencode($produit['code_unique']));
+                exit();
+            } elseif ($role === 'producteur') {
                 header("Location: produit.php?id=" . $produit_id);
                 exit();
             }
