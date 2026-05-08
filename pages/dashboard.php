@@ -156,9 +156,15 @@ if ($role === 'producteur') {
       <h3 style="margin-bottom:1rem;">Scanner un produit pour ajouter une étape</h3>
       <p style="font-size:.9rem; color:var(--text-2); margin-bottom:1rem;">Entrez le code unique du produit pour enregistrer votre intervention (<?php echo $role; ?>).</p>
       <form action="produit.php" method="GET" class="search-box" style="margin:0; max-width:100%;">
-        <input type="text" name="code_search" class="form-input" placeholder="Ex: PROD_..." required>
+        <input type="text" name="code_search" id="code-input" class="form-input" placeholder="Ex: PROD_..." required>
         <button type="submit" class="btn btn-primary">Chercher</button>
+        <button type="button" class="btn btn-secondary" onclick="document.getElementById('qr-scanner-container').style.display='block'; startQRScanner();"><?php echo get_icon('camera', '1.2em'); ?> Scanner</button>
       </form>
+
+      <div id="qr-scanner-container" style="display:none; margin-top:1rem;" class="anim text-center">
+        <div id="qr-reader"></div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="document.getElementById('qr-scanner-container').style.display='none';">Fermer le scanner</button>
+      </div>
     </div>
 
     <div class="card anim" style="overflow-x:auto;">
@@ -216,5 +222,7 @@ if ($role === 'producteur') {
     </div>
   </div>
 </div>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <?php include '../includes/footer.php'; ?>

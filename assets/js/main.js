@@ -146,7 +146,16 @@ document.addEventListener('DOMContentLoaded', () => {
       scanner.clear();
       const input = document.getElementById('code-input');
       if (input) {
-        input.value = decodedText;
+        let codeValue = decodedText;
+        try {
+          const url = new URL(decodedText);
+          if (url.searchParams.has('code')) {
+            codeValue = url.searchParams.get('code');
+          }
+        } catch (e) {
+          // Pas une URL, on garde le texte brut
+        }
+        input.value = codeValue;
         input.form.submit();
       }
     });
